@@ -59,15 +59,19 @@ This project uses the information from the abalone dataset in the PivotalR libra
 # download.file("https://raw.githubusercontent.com/mike-tex/capstone/master/abalone_vars.csv", "abalone_vars.csv")
 
 
-read_csv("https://raw.github.com/mike-tex/capstone/blob/master/abalone_vars.csv")
+# read_csv("https://raw.github.com/mike-tex/capstone/blob/master/abalone_vars.csv")
+# 
+# x <- read_csv("https://raw.githubusercontent.com/mike-tex/PH125.9x-capstone-abalone-project/master/abalone_vars.csv")
+# 
+# https://github.com/mike-tex/PH125.9x-capstone-abalone-project/blob/master/abalone_vars.csv
+# 
+# abalone_vars <- 
+#   read.csv(curl("https://raw.githubusercontent.com/mike-tex/capstone/master/abalone_vars.csv"))
+# 
+# abalone_vars <- 
+#   read.csv(curl("https://github.com/mike-tex/PH125.9x-capstone-abalone-project/blob/master/abalone_vars.csv"))
 
-read_csv("https://raw.github.com/mike-tex/capstone/master/abalone_vars.csv")
-
-abalone_vars <- 
-  read.csv(curl("https://raw.githubusercontent.com/mike-tex/capstone/master/abalone_vars.csv"))
-
-abalone_vars <- 
-  read.csv(url("abalone_vars.csv"))
+abalone_vars <- read_csv("https://raw.githubusercontent.com/mike-tex/PH125.9x-capstone-abalone-project/master/abalone_vars.csv")
 
 names(abalone_vars) <- c("Name", "Data.Type",
                          "Measure", "Description")
