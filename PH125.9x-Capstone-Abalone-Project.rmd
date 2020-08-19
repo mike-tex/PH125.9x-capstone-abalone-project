@@ -482,7 +482,7 @@ cat(tmptext)
 ```{r results, echo=F, results="asis"}
 tmptxt <- paste0("Regression and classification analyses are done for multiple models.  The best result is obtained with classification using the \"",
         class_fits[[best_class]]$method,
-        "\" model by segregating rings into age groups.  Accuracy using test data is: ",
+        "\" model by segregating rings into age groups.  Using test data, the accuracy is: ",
         best_accuracy, ".")
 cat(tmptxt)
 ```
