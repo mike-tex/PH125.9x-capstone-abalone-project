@@ -51,32 +51,20 @@ Additional information, such as weather patterns and location (hence food availa
 ## Overview
 This project uses the information from the abalone dataset in the PivotalR library to identify the best model for predicting rings. 
 
-```{r table description, echo=FALSE}
-
-# dl <- tempfile()
-# download.file("http://files.grouplens.org/datasets/movielens/ml-10m.zip", dl)
-
-# download.file("https://raw.githubusercontent.com/mike-tex/capstone/master/abalone_vars.csv", "abalone_vars.csv")
+\pagebreak
+### Dataset Format
+The attribute name, attribute type, the measurement unit and a brief description is given. The number of rings is the value to predict: either as a continuous value or as a classification problem.
 
 
-# read_csv("https://raw.github.com/mike-tex/capstone/blob/master/abalone_vars.csv")
-# 
-# x <- read_csv("https://raw.githubusercontent.com/mike-tex/PH125.9x-capstone-abalone-project/master/abalone_vars.csv")
-# 
-# https://github.com/mike-tex/PH125.9x-capstone-abalone-project/blob/master/abalone_vars.csv
-# 
-# abalone_vars <- 
-#   read.csv(curl("https://raw.githubusercontent.com/mike-tex/capstone/master/abalone_vars.csv"))
-# 
-# abalone_vars <- 
-#   read.csv(curl("https://github.com/mike-tex/PH125.9x-capstone-abalone-project/blob/master/abalone_vars.csv"))
+```{r table description, echo=FALSE, message=F}
 
-abalone_vars <- read_csv("https://raw.githubusercontent.com/mike-tex/PH125.9x-capstone-abalone-project/master/abalone_vars.csv")
+abalone_vars <-  read_csv("https://raw.githubusercontent.com/mike-tex/PH125.9x-capstone-abalone-project/master/abalone_vars.csv")
 
 names(abalone_vars) <- c("Name", "Data.Type",
                          "Measure", "Description")
 
 abalone_vars %>% knitr::kable() 
+
 rm(abalone_vars)
 
 ```
@@ -84,10 +72,10 @@ rm(abalone_vars)
 ## Key Steps
 The abalone dataset is loaded from the PivotalR library.  It is then divided into training and testing data sets, 90% and 10% respectively.  
 
-In order to determine the best model for predicting rings, and hence the highest accuracy, both regression and classification analyses were done.  Models used for regression were:  lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf.  The classification models were:  knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf.  Classification was done by grouping rings into age groups:  juvenile, adult, and senior.  The best models (least RMSE / highest accuracy) were chosen from each set of analysis.  The results and conclusions from the analysis are reported.
+In order to determine the best model for predicting rings, and hence the highest accuracy, both regression and classification analyses were done.  Models used for regression are:  lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf.  The classification models are:  knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf.  Classification was done by grouping rings into age groups:  juvenile, adult, and senior.  The best models (least RMSE / highest accuracy) were chosen from each set of analysis.  The results and conclusions from the analysis are reported.
 
 ## Data Prep
-The abalone dataset is obtained from the PivotalR library.  Sex was converted to a number: I = 0; F = 1; and M = 2 for both regression and classification analysis.  For classification, rings were grouped as juvenile (1-7); adult (8-11); and senior (12-29).  The grouping was based on a summary() of rings using the 1st quartile for juvenile, between the 1st and 3rd quartile for adult, and senior the remainder.
+The abalone dataset is obtained from the PivotalR library.  Sex is converted to a number: I = 0; F = 1; and M = 2 for both regression and classification analysis.  For classification, rings are grouped as juvenile (1-7); adult (8-11); and senior (12-29).  The grouping was based on a summary() of rings using the 1st quartile for juvenile, between the 1st and 3rd quartile for adult, and senior the remainder.
 
 ```{r summary(rings)}
 summary(abalone$rings)
@@ -174,9 +162,9 @@ abalone_c <- abalone_c %>% select(-rings)
 
 Data analysis begins by visualizing the data. The abalone data is visualized in several different ways, including: looking at a sampling of the data, the data structure, summary, correlation, density plots, histograms, box plots, pairs plot, and correlation plot.
 
-Subsequently, regression analysis is performed using nine different model methods (lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf).  After grouping the rings as juvenile, adult, and senior, classification analysis was done using nine model methods as well (knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf).  
+Subsequently, regression analysis is performed using nine different model methods (lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf).  After grouping the rings as juvenile, adult, and senior, classification analysis is done using nine model methods as well (knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf).  
 
-The results of the analysis are reported for each analysis type - regression and classification, identifying the best model for each.
+The results of the analyses are reported for each analysis type - regression and classification, identifying the best model for each.
 
 ## Visualizing the data
 
@@ -190,6 +178,7 @@ head(abalone, 3)
 str(abalone)
 ```
 
+\pagebreak
 ### Summary
 ```{r summary(abalone_r)}
 summary(abalone_r)
@@ -377,10 +366,10 @@ print_regress_results %>% knitr::kable()
 ```{r print accuracy, echo = F, results = "asis"}
 ## Accuracy
 
-tmptext <- paste0("\n\"",
+tmptext <- paste0("  \n\n\n\"",
   results$method[which.min(results$RMSE)],
   "\" is the best model based on a minimum RMSE of ",
-  round(min(results$RMSE), 5), ".",
+  round(min(results$RMSE), 5), ".  ",
   "\n\nUsing the \"",
        regress_fits[[best_regress_model]]$method,
        "\" model with test data, the accuracy is: ",
@@ -471,12 +460,12 @@ print_class_results %>% knitr::kable()
 best_accuracy <- 
   round(accuracy(pred_class, 
                  test_set_c$rgrp),digits = 5)
-tmptext <- paste0("\n\nBased on comparing accuracy",
+tmptext <- paste0("\n\n\nBased on comparing accuracy",
           " for all the models, using training data, \"",
           results$method[which.max(results$Accuracy)],
           "\" is the best model with an ",
           "accuracy of ",
-          round(max(results$Accuracy), 5), ".",
+          round(max(results$Accuracy), 5), ".  ",
           "\n\nUsing the \"",
           class_fits[[best_class]]$method,
           "\" model with the test data,",
@@ -489,7 +478,7 @@ cat(tmptext)
 <!-- (a results section that presents the modeling results and discusses the model performance; and) -->
 
 ```{r results, echo=F, results="asis"}
-tmptxt <- paste0("Regression and classification analyses were done for multiple models.  The best result was obtained with classification using the \"",
+tmptxt <- paste0("Regression and classification analyses were done for multiple models.  The best result is obtained with classification using the \"",
         class_fits[[best_class]]$method,
         "\" model by segregating rings into age groups (juvenile, adult, senior).  The resulting accuracy with test data is: ",
         # round(
@@ -502,13 +491,13 @@ cat(tmptxt)
 # Conclusion
 <!-- (a conclusion section that gives a brief summary of the report, its potential impact, its limitations, and future work.) -->
 
-Given the many variables, such as availability of food, water conditions, and weather patterns, which are outside the scope of this dataset, predicting rings (aka age) is difficult.  Grouping age and analyzing by classification, we can get a good approximation of the abalone rings.
+Given the many variables, such as availability of food, water conditions, and weather patterns, which are outside the scope of this dataset, predicting rings (i.e. age) is difficult.  Grouping age and analyzing by classification, we can get a fair approximation.
 
-Additional work could be done on tuning the models, trying other methods, and/or including additional data on weather, water, and food availability.
+Additional work can be done on tuning the models, exploring other methods, and/or including additional data, such as weather, water conditions, and food availability.
 
 \pagebreak
 ## Citations
-The Editors of Encyclopaedia Britannica. (2020, April 23). "Abalone". Encyclopedia Britanica. `https://www.britannica.com/animal/abalone`
+The Editors of Encyclopaedia Britannica. (2020, April 23). *Abalone*. Encyclopedia Britanica. `https://www.britannica.com/animal/abalone`
 
 
 
