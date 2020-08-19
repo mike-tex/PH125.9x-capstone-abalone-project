@@ -46,7 +46,7 @@ Depending on the species, abalones usually range from 10 to 25 cm (4 to 10 inche
 
 The age of abalone is determined by cutting the shell through the cone, staining it, and counting the number of rings through a microscope - a tedious and time-consuming task. Other measurements, which are easier to obtain, may be used to predict the age. The age is calculated as 1.5 plus the number of rings.
 
-Additional information, such as weather patterns and location (hence food availability) may be required to accurately predict age (i.e. rings).
+Additional information, such as weather patterns and location (hence food availability) may be required to accurately predict age (i.e. rings). 
 
 ## Overview
 This project uses the information from the abalone dataset in the PivotalR library to identify the best model for predicting rings. 
@@ -288,7 +288,7 @@ fits <- lapply(models, function(model) {
 
 
 
-There is some variation in the code depending upon whether regression or classification analysis.
+There is some variation in the code depending upon whether regression or classification.
 
 
 
@@ -478,7 +478,7 @@ cat(tmptext)
 <!-- (a results section that presents the modeling results and discusses the model performance; and) -->
 
 ```{r results, echo=F, results="asis"}
-tmptxt <- paste0("Regression and classification analyses were done for multiple models.  The best result is obtained with classification using the \"",
+tmptxt <- paste0("Regression and classification analyses are done for multiple models.  The best result is obtained with classification using the \"",
         class_fits[[best_class]]$method,
         "\" model by segregating rings into age groups (juvenile, adult, senior).  The resulting accuracy with test data is: ",
         # round(
