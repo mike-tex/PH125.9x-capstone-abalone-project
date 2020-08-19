@@ -73,10 +73,10 @@ rm(abalone_vars)
 ## Key Steps
 The abalone dataset is loaded from the PivotalR library.  It is then divided into training and testing data sets, 90% and 10% respectively.  
 
-In order to determine the best model for predicting rings, and hence the highest accuracy, both regression and classification analyses are done.  Models used for regression are:  lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf.  The classification models are:  knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf.  Classification is done by grouping rings into age groups:  juvenile, adult, and senior.  The best models (least RMSE / highest accuracy) are chosen from each set of analysis.  The results and conclusions from the analysis are reported.
+In order to determine the best model for predicting rings, and hence the highest accuracy, both regression and classification analyses are done.  Models used for regression are:  lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf.  The classification models are:  knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf.  Classification is done by grouping rings into age groups:  juvenile, adult, and senior.  The best models (least RMSE / highest accuracy) are chosen from each set of analyses.  The results and conclusions are then reported.
 
 ## Data Prep
-The abalone dataset is obtained from the PivotalR library.  Sex is converted to a number: I = 0; F = 1; and M = 2 for both regression and classification analysis.  For classification, rings are grouped as juvenile (1-7); adult (8-11); and senior (12-29).  The grouping was based on a summary() of rings using the 1st quartile for juvenile, between the 1st and 3rd quartile for adult, and senior the remainder.
+The abalone dataset is obtained from the PivotalR library.  Sex is converted to a number: I = 0; F = 1; and M = 2 for both regression and classification analysis.  For classification, rings are grouped as juvenile (1-7); adult (8-11); and senior (12-29).  The grouping is based on a summary() of rings using the 1st quartile for juvenile, between the 1st and 3rd quartile for adult, and senior the remainder.
 
 ```{r summary(rings)}
 summary(abalone$rings)
@@ -158,6 +158,7 @@ abalone_c <- abalone_c %>% select(-rings)
 
 ```
 
+\pagebreak
 # Analysis Methods
 <!-- (a methods/analysis section that explains the process and techniques used, including data cleaning, data exploration and visualization, insights gained, and your modeling approaches (you must use at least two different models or algorithms);) -->
 
@@ -490,7 +491,7 @@ cat(tmptxt)
 # Conclusion
 <!-- (a conclusion section that gives a brief summary of the report, its potential impact, its limitations, and future work.) -->
 
-Given the many variables, such as availability of food, water conditions, and weather patterns, which are outside the scope of this dataset, predicting rings (i.e. age) is difficult.  Grouping age and analyzing by classification, we can get a fair approximation.
+Given the many variables, such as availability of food, water conditions, and weather patterns, which are outside the scope of this dataset, precisely predicting rings (i.e. age) is difficult.  Grouping age and analyzing by classification, we can get a fair approximation.
 
 Additional work can be done on tuning the models, exploring other methods, and/or including additional data, such as weather, water conditions, location, and food availability.
 
