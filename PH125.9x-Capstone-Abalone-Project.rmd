@@ -48,10 +48,11 @@ The age of abalone is determined by cutting the shell through the cone, staining
 
 Additional information, such as weather patterns and location (hence food availability) may be required to accurately predict age (i.e. rings). 
 
+\pagebreak
 ## Overview
 This project uses the information from the abalone dataset in the PivotalR library to identify the best model for predicting rings. 
 
-\pagebreak
+
 ### Dataset Format
 The attribute name, attribute type, the measurement unit and a brief description is given. The number of rings is the value to predict: either as a continuous value or as a classification problem.
 
@@ -72,7 +73,7 @@ rm(abalone_vars)
 ## Key Steps
 The abalone dataset is loaded from the PivotalR library.  It is then divided into training and testing data sets, 90% and 10% respectively.  
 
-In order to determine the best model for predicting rings, and hence the highest accuracy, both regression and classification analyses were done.  Models used for regression are:  lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf.  The classification models are:  knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf.  Classification was done by grouping rings into age groups:  juvenile, adult, and senior.  The best models (least RMSE / highest accuracy) were chosen from each set of analysis.  The results and conclusions from the analysis are reported.
+In order to determine the best model for predicting rings, and hence the highest accuracy, both regression and classification analyses are done.  Models used for regression are:  lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf.  The classification models are:  knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf.  Classification is done by grouping rings into age groups:  juvenile, adult, and senior.  The best models (least RMSE / highest accuracy) are chosen from each set of analysis.  The results and conclusions from the analysis are reported.
 
 ## Data Prep
 The abalone dataset is obtained from the PivotalR library.  Sex is converted to a number: I = 0; F = 1; and M = 2 for both regression and classification analysis.  For classification, rings are grouped as juvenile (1-7); adult (8-11); and senior (12-29).  The grouping was based on a summary() of rings using the 1st quartile for juvenile, between the 1st and 3rd quartile for adult, and senior the remainder.
@@ -160,7 +161,7 @@ abalone_c <- abalone_c %>% select(-rings)
 # Analysis Methods
 <!-- (a methods/analysis section that explains the process and techniques used, including data cleaning, data exploration and visualization, insights gained, and your modeling approaches (you must use at least two different models or algorithms);) -->
 
-Data analysis begins by visualizing the data. The abalone data is visualized in several different ways, including: looking at a sampling of the data, the data structure, summary, correlation, density plots, histograms, box plots, pairs plot, and correlation plot.
+Data analysis begins by visualizing the data. The abalone data is visualized in several different ways, including: looking at the actual data, the data structure, summary, correlation, density plots, histograms, box plots, pairs plot, and correlation plot.
 
 Subsequently, regression analysis is performed using nine different model methods (lm, glm, knn, svmLinear, rpart, gamLoess, treebag, gbm, and rf).  After grouping the rings as juvenile, adult, and senior, classification analysis is done using nine model methods as well (knn, lda, qda, naive_bayes, svmLinear, svmRadial, gamLoess, multinom, and rf).  
 
@@ -268,7 +269,7 @@ corrplot(correlations,
 
 \pagebreak
 ## Analysis
-Regression and classification analyses are done for multiple models using the following basic code:
+Regression and classification analyses are done using the following code:
 
 ```{r dont_show, eval=F}
 
@@ -356,7 +357,7 @@ pred_regress <-
 pred_regress <- round(pred_regress)
 ```
 
-The result from running regression analysis using various model methods is:
+The result from running regression analysis is:
 
 ```{r print reg results, echo=F, results="asis"}
 print_regress_results %>% knitr::kable()
@@ -449,7 +450,7 @@ test_set_c$rgrp <- factor(test_set_c$rgrp)
 
 ```
 
-The result of running classification analysis using various model methods is:
+The result of running classification analysis is:
 
 ```{r print class results, echo=F}
 print_class_results %>% knitr::kable()
@@ -480,9 +481,7 @@ cat(tmptext)
 ```{r results, echo=F, results="asis"}
 tmptxt <- paste0("Regression and classification analyses are done for multiple models.  The best result is obtained with classification using the \"",
         class_fits[[best_class]]$method,
-        "\" model by segregating rings into age groups (juvenile, adult, senior).  The resulting accuracy with test data is: ",
-        # round(
-        #   class_fits[[best_class]]$results$Accuracy, 4),
+        "\" model by segregating rings into age groups.  Accuracy using test data is: ",
         best_accuracy, ".")
 cat(tmptxt)
 ```
@@ -493,7 +492,7 @@ cat(tmptxt)
 
 Given the many variables, such as availability of food, water conditions, and weather patterns, which are outside the scope of this dataset, predicting rings (i.e. age) is difficult.  Grouping age and analyzing by classification, we can get a fair approximation.
 
-Additional work can be done on tuning the models, exploring other methods, and/or including additional data, such as weather, water conditions, and food availability.
+Additional work can be done on tuning the models, exploring other methods, and/or including additional data, such as weather, water conditions, location, and food availability.
 
 \pagebreak
 ## Citations
