@@ -54,7 +54,7 @@ This project uses the information from the abalone dataset in the PivotalR libra
 
 
 ### Dataset Format
-The attribute name, attribute type, the measurement unit and a brief description is given. The number of rings is the value to predict: either as a continuous value or as a classification problem.
+The attribute name, attribute type, the measurement unit and a brief description is given. The number of rings is the value to predict: either as a continuous value or by classification.
 
 
 ```{r table description, echo=FALSE, message=F}
