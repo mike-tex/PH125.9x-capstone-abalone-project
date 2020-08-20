@@ -35,17 +35,9 @@ if(!require(Metrics)){install.packages("Metrics")}
 if(!require(gbm)){install.packages("gbm")}
 if(!require(gam)){install.packages("gam")}
 if(!require(splines)){install.packages("splines")}
-if(!require(foreach)){install.packages("foreach")}
+# if(!require(foreach)){install.packages("foreach")}
 if(!require(gridExtra)){install.packages("gridExtra")}
 if(!require(corrplot)){install.packages("corrplot")}
-if(!require(doMC)){
-  install.packages("doMC", 
-                   repos="http://R-Forge.R-project.org")}
-
-doMC::registerDoMC(cores=4)
-
-
-
 
 ##################################################
 ##
@@ -76,12 +68,7 @@ abalone_r <- abalone %>%
 abalone_r <- abalone_r %>% select(-sex)
 
 # reorder so sex_num is at top where sex was
-abalone_r <- cbind(abalone_r[9], abalone_r[1:8])
-
-# # # factor rings
-# abalone_r$rings <- factor(abalone_r$rings)
-
-save(abalone_r, file = "abalone_r.Rdata")
+abalone_r <- cbind(abalone_r[9], abalone_r[-9])
 
 
 ##
@@ -233,9 +220,6 @@ save(regress_fits, file = "regress_fits.Rdata")
   load(file = "regress_fits.Rdata")
 }
 
-if(!exists("regress_fits")){
-  load(file = "regress_fits.Rdata")}
-
 results <- map_df(regress_fits, function(model) {
   method <- model$method
   RMSE <- model$results$RMSE %>% min()
@@ -261,15 +245,19 @@ pred_regress <- round(pred_regress)
 ## Accuracy
 accuracy(pred_regress, test_set_r$rings)
 
-# [1] 0.4929375 # using abalone for train and test
-## Accuracy = 0.4929375
-# 
-# using train_set for models 
-# and test_set for predict
-# [1] 0.249522
+## Accuracy
 
+tmptext <- paste0("  \n\n\n\"",
+  results$method[which.min(results$RMSE)],
+  "\" is the best model based on a minimum RMSE of ",
+  round(min(results$RMSE), 5), ".  ",
+  "\n\nUsing the \"",
+                  regress_fits[[best_regress_model]]$method,
+   "\" model with test data, the accuracy is: ",
+  round(accuracy(pred_regress, test_set_r$rings),
+  digits = 5), ".")
 
-
+cat(tmptext)
 
 
 ## How to improve?  
@@ -307,7 +295,7 @@ if(!file.exists("class_fits.Rdata")) {
                           number = 10,
                           repeats = 3)
   metric <- "accuracy"
-  seed <- 2020
+  seed <- 3
   
   class_fits <- lapply(models, function(model) {
     print(model)
@@ -351,10 +339,32 @@ test_set_c$rgrp <- factor(test_set_c$rgrp)
 confusionMatrix(pred_class, 
   test_set_c$rgrp)$overall[["Accuracy"]]
 
+print_class_results %>% knitr::kable()
+
+best_accuracy <- 
+  round(accuracy(pred_class, 
+                 test_set_c$rgrp),digits = 5)
+tmptext <- paste0("\n\n\nBased on comparing accuracy",
+        " for all the models, using training data, \"",
+        results$method[which.max(results$Accuracy)],
+        "\" is the best model with an ",
+        "accuracy of ",
+        round(max(results$Accuracy), 5), ".  ",
+        "\n\nUsing the \"",
+        class_fits[[best_class]]$method,
+        "\" model with the test data,",
+        " the accuracy is: ", best_accuracy)
+cat(tmptext)
 
 
+## Results
 
+tmptxt <- paste0("Regression and classification analyses are done for multiple models.  The best result is obtained with classification using the \"",
+     class_fits[[best_class]]$method,
+     "\" model by segregating rings into age groups.  Using test data, the accuracy is: ",
+     best_accuracy, ".")
 
+cat(tmptxt)
 
 
 

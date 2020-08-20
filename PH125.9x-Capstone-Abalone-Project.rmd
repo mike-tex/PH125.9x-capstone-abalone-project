@@ -11,7 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 if(!require(caret)) install.packages("caret", repos = "http://cran.us.r-project.org")
 if(!require(kableExtra)) install.packages("kableExtra", repos = "http://cran.us.r-project.org")
-if(!require(tinytex)) tinytex::install_tinytex()
 if(!require(PivotalR)){install.packages("PivotalR")}
 if(!require(Metrics)){install.packages("Metrics")}
 if(!require(gbm)){install.packages("gbm")}
@@ -106,29 +105,6 @@ abalone_r <- abalone_r %>% select(-sex)
 # reorder so sex_num is at top where sex was
 abalone_r <- cbind(abalone_r[9], abalone_r[1:8])
 
-# # # factor rings
-# abalone_r$rings <- factor(abalone_r$rings)
-
-save(abalone_r, file = "abalone_r.Rdata")
-
-##
-##  split_data() into test and train - 90% train
-##
-
-set.seed(2020)
-idx <-
-  createDataPartition(
-    y = abalone$rings,
-    times = 1,
-    p = 0.1,
-    list = FALSE
-  )
-
-train_set_r <- abalone_r[-idx,]
-test_set_r <- abalone_r[idx,]
-
-
-
 ##
 ## data prep for classification
 ##
@@ -146,6 +122,7 @@ abalone_c <- abalone_r %>%
 
 # remove rings 
 abalone_c <- abalone_c %>% select(-rings)
+
 
 ```
 
@@ -284,6 +261,24 @@ There is some variation in the exact code depending upon whether regression or c
 
 ## Regression Analysis
 ```{r regression analysis, include=F}
+
+##
+##  split_data() into test and train - 90% train
+##
+
+set.seed(3)
+idx <-
+  createDataPartition(
+    y = abalone$rings,
+    times = 1,
+    p = 0.1,
+    list = FALSE
+  )
+
+train_set_r <- abalone_r[-idx,]
+test_set_r <- abalone_r[idx,]
+
+
 ## Apply multiple models
 models <- c("lm",
             "glm",
@@ -344,6 +339,8 @@ pred_regress <-
     type = "raw")
 
 pred_regress <- round(pred_regress)
+res_accuracy <- round(accuracy(pred_regress,
+                    test_set_r$rings), digits = 5)
 ```
 
 The result from running regression analysis is:
@@ -363,8 +360,7 @@ tmptext <- paste0("  \n\n\n\"",
   "\n\nUsing the \"",
        regress_fits[[best_regress_model]]$method,
        "\" model with test data, the accuracy is: ",
-        round(accuracy(pred_regress, test_set_r$rings),
-        digits = 5), ".")
+        res_accuracy, ".")
 cat(tmptext)
 ```
 
