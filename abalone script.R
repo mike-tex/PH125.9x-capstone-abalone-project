@@ -194,7 +194,6 @@ models <- c("lm",
             "treebag",
             "gbm",
             "rf")
-training_data <- train_set_r
 control <- trainControl(
   method="repeatedcv", 
   number=10, 
@@ -202,20 +201,20 @@ control <- trainControl(
 metric <- "RMSE"
 seed <- 3
 
-if(!file.exists("regress_fits.Rdata")){
-regress_fits <- lapply(models, function(model) {
-  print(model)
-  set.seed(seed)
-  train(
-    rings ~ .,
-    data = training_data,
-    method = model,
-    metric = metric,
-    trControl = control
-  )
-})
-names(regress_fits) <- models
-save(regress_fits, file = "regress_fits.Rdata")
+if(!file.exists("regress_fits.Rdata")) {
+  regress_fits <- lapply(models, function(model) {
+    print(model)
+    set.seed(seed)
+    train(
+      rings ~ .,
+      data = train_set_r,
+      method = model,
+      metric = metric,
+      trControl = control
+    )
+  })
+  names(regress_fits) <- models
+  save(regress_fits, file = "regress_fits.Rdata")
 } else {
   load(file = "regress_fits.Rdata")
 }
@@ -278,31 +277,31 @@ cat(tmptext)
 train_set_c <- abalone_c[-idx,]
 test_set_c<- abalone_c[idx,]
 
+models <- c(
+  "knn",
+  "lda",
+  "qda",
+  "naive_bayes",
+  "svmLinear",
+  "svmRadial",
+  "gamLoess",
+  "multinom",
+  "rf"
+)
+
+control <- trainControl(method = "repeatedcv",
+                        number = 10,
+                        repeats = 3)
+metric <- "Accuracy"
+seed <- 3
+
 if(!file.exists("class_fits.Rdata")) {
-  models <- c(
-    "knn",
-    "lda",
-    "qda",
-    "naive_bayes",
-    "svmLinear",
-    "svmRadial",
-    "gamLoess",
-    "multinom",
-    "rf"
-  )
-  
-  control <- trainControl(method = "repeatedcv",
-                          number = 10,
-                          repeats = 3)
-  metric <- "accuracy"
-  seed <- 3
-  
   class_fits <- lapply(models, function(model) {
     print(model)
     set.seed(seed)
     train(
       rgrp ~ .,
-      data = train_set_r,
+      data = train_set_c,
       method = model,
       metric = metric,
       trControl = control
