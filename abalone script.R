@@ -39,6 +39,20 @@ if(!require(splines)){install.packages("splines")}
 if(!require(gridExtra)){install.packages("gridExtra")}
 if(!require(corrplot)){install.packages("corrplot")}
 
+
+## download abalone dataset description file
+
+abalone_vars <-  read_csv("https://raw.githubusercontent.com/mike-tex/PH125.9x-capstone-abalone-project/master/abalone_vars.csv")
+
+names(abalone_vars) <- c("Name", "Data.Type",
+                         "Measure", "Description")
+
+# print abalone dataset description
+abalone_vars %>% knitr::kable() 
+
+rm(abalone_vars)
+
+
 ##################################################
 ##
 ##   load abalone dataset from PivotalR library 
@@ -158,7 +172,7 @@ pairs(abalone_r)
 correlations <- cor(abalone[-1])
 corrplot(correlations, 
        method="circle",
-       title = "\n\n\n\nAbalone correlation plot") 
+       title = "Abalone correlation plot") 
 
 
 
@@ -321,7 +335,7 @@ results <- map_df(class_fits, function(model) {
   return(list("method" = method, "Accuracy" = Accuracy))
 })
 
-results %>%
+print_class_results <- results %>%
   as_tibble() %>%
   # as_data_frame() %>%
   arrange(desc(Accuracy))
